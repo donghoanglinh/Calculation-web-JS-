@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style type="text/css">
+    body {
+      margin: auto;
+      width: 95%;
+      text-align: center;
+    }
+    /* CSS cho phần nhập dữ liệu */
+    #inputTable {
+      margin:  auto;
+      width: auto;
+    }
+    #inputTable th {
+      border: none;
+      width:  80px; 
+      text-align: left;
+    }
+    #inputTable td{
+      border: none;
+      text-align: left;
+      width:  auto;
+    } 
+    #inputTable input{
+      width:  200px;
+    } 
+    button {
+      margin:  10px;
+      font-weight:  bold;
+      color:  #F00;
+    }
+
+    /* CSS cho phần nhập hiện thị dữ liệu*/
+    #myTable {
+      width:  100%;
+    }
+    #myTable tr {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
+      grid-gap: 2px;
+      padding: 1px;
+    }
+    #myTable th, #myTable td {
+      border: 1px solid black;
+      text-align: center;
+      box-shadow: 2px 2px grey;
+    }
+  </style>
+</head>
+  <body>
+<header>
+  <h1>Class Marksheet</h1>
+</header>
+<form>
+  <table id="inputTable">
+    <tr>
+      <th><label for="name">Họ Tên</label></th>
+      <td><input id="name" type="text"></td>
+    </tr>
+    <tr>
+      <th><label for="math_score">Điểm Toán</label></th>
+      <td><input id="math_score" type="text"></td>
+    </tr>
+    <tr>
+      <th><label for="physical_score">Điểm Lý</label></th>
+      <td><input id="physical_score" type="text"></td>
+    </tr>
+    <tr>
+      <th><label for="chemistry_score">Điểm Hóa</label></th>
+      <td><input id="chemistry_score" type="text"></td>
+    </tr>
+  </table>
+  <button type="button" onclick="inputdata(testScore)">Nhập Dữ Liệu</button>
+  <table id="myTable">
+    <tr>
+      <th>STT</th>
+      <th>Họ Tên</th>
+      <th>Toán</th>
+      <th>Lý</th>
+      <th>Hóa</th>
+      <th>Trung Bình</th>
+    </tr>
+  </table>
+  <button type="button" onclick="average()">Tính điểm trung bình</button>
+  <button type="button" onclick="check_student()">Xác định học sinh giỏi</button>
+</form>
+<script type="text/javascript">
+
+    // tạo biến form mẫu
+  var testScore =  {
+    name : "",
+    math : 0,
+    physical : 0,
+    chemistry : 0
+  };
+  var i = 0;
+
+  // nhập dữ liệu và hiện thị dữ liệu
+  function inputdata() {
+  // gán giá trị vào biến
+  testScore.name = document.getElementById("name").value;
+  testScore.math = document.getElementById("math_score").value;
+  testScore.physical = document.getElementById("physical_score").value;
+  testScore.chemistry = document.getElementById("chemistry_score").value;
+
+  // vẽ table
+    i++;
+    var table = document.getElementById("myTable");
+    var row = table.insertRow(i);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+    var cell6 = row.insertCell(5);
+
+  // nhập giá trị vào cell
+    cell1.innerHTML = i;
+    cell2.innerHTML = testScore.name;
+    cell3.innerHTML = testScore.math;
+    cell4.innerHTML = testScore.physical;
+    cell5.innerHTML = testScore.chemistry;
+    cell6.innerHTML = "?";
+
+  // Xóa giá trị hiện thị trên ô 
+  document.getElementById("name").value = "";
+  document.getElementById("math_score").value = "";
+  document.getElementById("physical_score").value = "";
+  document.getElementById("chemistry_score").value = "";
+}
+
+// Tính điểm trung bình của từng học 
+function average() {
+  var table = document.getElementById("myTable");
+  for (var i = 1; i < table.rows.length ; i++) {
+    var math = table.rows[i].cells[2].innerHTML;
+    var physical = table.rows[i].cells[3].innerHTML;
+    var chemistry = table.rows[i].cells[4].innerHTML;
+    var average = (parseFloat(math) + parseFloat(physical) + parseFloat(chemistry))/3;
+    table.rows[i].cells[5].innerHTML = average.toFixed(1);
+  }
+}
+
+// kiểm tra học sinh có điểm trung bình > 8
+function check_student() {
+  var table = document.getElementById("myTable");
+  for (var i = 1; i < table.rows.length ; i++) {
+      var average = table.rows[i].cells[5].innerHTML;
+      average = parseFloat(average);
+      if (average > 8.0) {
+        console.log(table.rows[i])
+        table.rows[i].style.color = "red";
+      }
+  }
+}
+</script>
+</body>
+</html>
